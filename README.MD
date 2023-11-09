@@ -34,7 +34,7 @@ include(FetchContent)
 FetchContent_Declare(
     endianlib
     GIT_REPOSITORY https://github.com/karaketir16/EndianLib.git
-    GIT_TAG master # or any particular tag or commit hash
+    GIT_TAG main # or any particular tag or commit hash
 )
 
 FetchContent_MakeAvailable(endianlib)
