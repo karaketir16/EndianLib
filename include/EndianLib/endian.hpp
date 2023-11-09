@@ -211,6 +211,9 @@ _CREATE_ENDIAN_TYPE(uint64_t)
 _CREATE_ENDIAN_TYPE(float)
 _CREATE_ENDIAN_TYPE(double)
 
+static_assert(sizeof(float) * 8 == 32, "float is not 32 bits");
+static_assert(sizeof(double) * 8 == 64, "double is not 64 bits");
+
 
 }
 
