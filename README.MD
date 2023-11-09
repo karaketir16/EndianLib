@@ -129,13 +129,15 @@ le_double
 ```cpp
 #include <EndianLib/endian.hpp>
 
+using namespace _endian_;
+
 int main() {
     be_int32_t      k;
     le_uint32_t     l;
     int64_t         m;
 
     k = l = m = 0xAABB;
-    assert(k == l && l == m && k == m);
+   //  assert(k == l && l == m && k == m);
     
     // Use the endian types as you would with native types
 }
