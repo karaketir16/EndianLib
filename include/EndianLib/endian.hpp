@@ -38,7 +38,7 @@ namespace _endian_ {
 
 
 template <typename T>
-T swap_endian(T u) //https://stackoverflow.com/a/4956493
+static T swap_endian(T u) //https://stackoverflow.com/a/4956493
 {
     static_assert (CHAR_BIT == 8, "CHAR_BIT != 8");
 
