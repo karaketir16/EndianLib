@@ -1,3 +1,4 @@
+#include <cstdint>
 #include <gtest/gtest.h>
 #include "EndianLib/endian.hpp"
 #include <cstring>
@@ -75,13 +76,6 @@ TEST(EndianLibTest, TypeCastingOperations) {
 
 using namespace _endian_; // Replace with your actual namespace
 
-// Helper function for cross-endian conversion tests
-template<typename T, std::endian fromEndian, std::endian toEndian>
-void testCrossEndianConversion(T value) {
-    _E_Base<T, fromEndian> sourceValue = value;
-    _E_Base<T, toEndian> convertedValue = static_cast<_E_Base<T, toEndian>>(sourceValue);
-    ASSERT_EQ(static_cast<T>(sourceValue), static_cast<T>(convertedValue));
-}
 
 TEST(EndianLibTest, Addition) {
     le_uint16_t le1 = 1, le2 = 2;
@@ -121,6 +115,33 @@ TEST(EndianLibTest, AdditionAssignment) {
     be_uint16_t be = 5;
     be += 3;
     ASSERT_EQ(static_cast<uint16_t>(be), 8);
+
+    uint16_t native_u = 3;
+    int native_i = 3;
+
+    le += native_u;
+    ASSERT_EQ(static_cast<uint16_t>(le), 11);
+
+    be += native_u;
+    ASSERT_EQ(static_cast<uint16_t>(be), 11);
+
+    le += native_i;
+    ASSERT_EQ(static_cast<uint16_t>(le), 14);
+
+    be += native_i;
+    ASSERT_EQ(static_cast<uint16_t>(be), 14);
+
+    le += le;
+    ASSERT_EQ(static_cast<uint16_t>(le), 28);
+
+    be += be;
+    ASSERT_EQ(static_cast<uint16_t>(be), 28);
+
+    le += be;
+    ASSERT_EQ(static_cast<uint16_t>(le), 56);
+
+    be += le;
+    ASSERT_EQ(static_cast<uint16_t>(be), 84);
 }
 
 // TODO other compound assignments
@@ -131,6 +152,11 @@ TEST(EndianLibTest, BitwiseAnd) {
 
     be_uint16_t be1 = 0b1010, be2 = 0b1100;
     ASSERT_EQ(static_cast<uint16_t>(be1 & be2), 0b1000);
+
+    be_uint16_t be = 0xFF00;
+    le_uint16_t le = 0x00FF;
+
+    ASSERT_EQ(static_cast<uint16_t>(be & le), 0x0000);
 }
 
 // TODO OR, XOR
@@ -144,8 +170,13 @@ TEST(EndianLibTest, TypeConversion) {
 }
 
 TEST(EndianLibTest, CrossEndianConversion) {
-    testCrossEndianConversion<uint16_t, std::endian::little, std::endian::big>(0x1234);
-    testCrossEndianConversion<uint16_t, std::endian::big, std::endian::little>(0x1234);
+    be_uint16_t sourceValue = 0x1234;
+    le_uint16_t convertedValue = 0x1234;
+
+    ASSERT_EQ(sourceValue, convertedValue);
+
+    sourceValue = convertedValue;
+    ASSERT_EQ(sourceValue, convertedValue);
 }
 
 TEST(EndianLibTest, LeftShift) {
