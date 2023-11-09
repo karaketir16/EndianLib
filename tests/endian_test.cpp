@@ -1,0 +1,216 @@
+#include <gtest/gtest.h>
+#include "EndianLib/endian.hpp"
+#include <cstring>
+
+TEST(EndianLibTest, SwapEndian) {
+    // Test endian swapping
+    uint16_t original = 0x1234;
+    uint16_t swapped = _endian_::swap_endian(original);
+    EXPECT_EQ(swapped, 0x3412);
+}
+
+
+TEST(EndianLibTest, LittleEndianConversion) {
+    _endian_::le_uint16_t leOriginal = 0x1234;
+    const uint8_t expectedLittleEndian[2] = {0x34, 0x12}; // little-endian representation
+
+    // Compare memory representation
+    ASSERT_EQ(0, memcmp(&leOriginal, expectedLittleEndian, sizeof(leOriginal)));
+}
+
+TEST(EndianLibTest, BigEndianConversion) {
+    _endian_::be_uint16_t beOriginal = 0x1234;
+    const uint8_t expectedBigEndian[2] = {0x12, 0x34}; // big-endian representation
+
+    // Compare memory representation
+    ASSERT_EQ(0, memcmp(&beOriginal, expectedBigEndian, sizeof(beOriginal)));
+}
+
+TEST(EndianLibTest, SameEndianCheck) {
+    // Test if the endian check is correct
+    EXPECT_TRUE(_endian_::IsSameEndian(std::endian::little) == _endian_::is_little_endian());
+    EXPECT_TRUE(_endian_::IsSameEndian(std::endian::big) != _endian_::is_little_endian());
+}
+
+
+
+TEST(EndianLibTest, LittleEndianArithmeticOperations) {
+    _endian_::le_uint16_t leValue1 = 0x0102;
+    _endian_::le_uint16_t leValue2 = 0x0304;
+
+    // Assuming operator+ is overloaded
+    _endian_::le_uint16_t leSum = leValue1 + leValue2;
+    uint16_t expectedSum = 0x0406; // expected result in little endian
+
+    ASSERT_EQ(static_cast<uint16_t>(leSum), expectedSum);
+}
+
+TEST(EndianLibTest, BigEndianArithmeticOperations) {
+    _endian_::be_uint16_t beValue1 = 0x0102;
+    _endian_::be_uint16_t beValue2 = 0x0304;
+
+    // Assuming operator+ is overloaded
+    _endian_::be_uint16_t beSum = beValue1 + beValue2;
+    uint16_t expectedSum = 0x0406; // expected result in big endian
+
+    ASSERT_EQ(static_cast<uint16_t>(beSum), expectedSum);
+}
+
+TEST(EndianLibTest, TypeCastingOperations) {
+    _endian_::le_uint16_t leValue = 0x1234;
+    _endian_::be_uint16_t beValue = 0x1234;
+
+    // Check type casting to native types
+    uint16_t nativeFromLe = static_cast<uint16_t>(leValue);
+    uint16_t nativeFromBe = static_cast<uint16_t>(beValue);
+
+    ASSERT_EQ(nativeFromLe, leValue);
+    ASSERT_EQ(nativeFromBe, beValue);
+}
+
+
+
+
+
+
+using namespace _endian_; // Replace with your actual namespace
+
+// Helper function for cross-endian conversion tests
+template<typename T, std::endian fromEndian, std::endian toEndian>
+void testCrossEndianConversion(T value) {
+    _E_Base<T, fromEndian> sourceValue = value;
+    _E_Base<T, toEndian> convertedValue = static_cast<_E_Base<T, toEndian>>(sourceValue);
+    ASSERT_EQ(static_cast<T>(sourceValue), static_cast<T>(convertedValue));
+}
+
+TEST(EndianLibTest, Addition) {
+    le_uint16_t le1 = 1, le2 = 2;
+    ASSERT_EQ(static_cast<uint16_t>(le1 + le2), 3);
+
+    be_uint16_t be1 = 1, be2 = 2;
+    ASSERT_EQ(static_cast<uint16_t>(be1 + be2), 3);
+}
+
+TEST(EndianLibTest, Subtraction) {
+    le_uint16_t le1 = 5, le2 = 2;
+    ASSERT_EQ(static_cast<uint16_t>(le1 - le2), 3);
+
+    be_uint16_t be1 = 5, be2 = 2;
+    ASSERT_EQ(static_cast<uint16_t>(be1 - be2), 3);
+}
+
+// TODO multiplication, division, modulus
+
+TEST(EndianLibTest, Increment) {
+    le_uint16_t le = 1;
+    le++;
+    ASSERT_EQ(static_cast<uint16_t>(le), 2);
+
+    be_uint16_t be = 1;
+    be++;
+    ASSERT_EQ(static_cast<uint16_t>(be), 2);
+}
+
+// TODO decrement
+
+TEST(EndianLibTest, AdditionAssignment) {
+    le_uint16_t le = 5;
+    le += 3;
+    ASSERT_EQ(static_cast<uint16_t>(le), 8);
+
+    be_uint16_t be = 5;
+    be += 3;
+    ASSERT_EQ(static_cast<uint16_t>(be), 8);
+}
+
+// TODO other compound assignments
+
+TEST(EndianLibTest, BitwiseAnd) {
+    le_uint16_t le1 = 0b1010, le2 = 0b1100;
+    ASSERT_EQ(static_cast<uint16_t>(le1 & le2), 0b1000);
+
+    be_uint16_t be1 = 0b1010, be2 = 0b1100;
+    ASSERT_EQ(static_cast<uint16_t>(be1 & be2), 0b1000);
+}
+
+// TODO OR, XOR
+
+TEST(EndianLibTest, TypeConversion) {
+    le_uint16_t le = 0x1234;
+    ASSERT_EQ(static_cast<uint16_t>(le), 0x1234);
+
+    be_uint16_t be = 0x1234;
+    ASSERT_EQ(static_cast<uint16_t>(be), 0x1234);
+}
+
+TEST(EndianLibTest, CrossEndianConversion) {
+    testCrossEndianConversion<uint16_t, std::endian::little, std::endian::big>(0x1234);
+    testCrossEndianConversion<uint16_t, std::endian::big, std::endian::little>(0x1234);
+}
+
+TEST(EndianLibTest, LeftShift) {
+    le_uint16_t le = 1;
+    le <<= 2;
+    ASSERT_EQ(static_cast<uint16_t>(le), 4);
+
+    be_uint16_t be = 1;
+    be <<= 2;
+    ASSERT_EQ(static_cast<uint16_t>(be), 4);
+}
+
+// TODO right shift
+
+
+TEST(EndianLibTest, MixedTypeAddition) {
+    uint16_t nativeValue = 0x0102;
+    be_uint16_t bigEndianValue = 0x0304;
+    le_uint16_t littleEndianValue = 0x0506;
+
+    // Perform addition
+    uint16_t sumBE = nativeValue + bigEndianValue;
+    uint16_t sumLE = nativeValue + littleEndianValue;
+
+    // Expected sums in native uint16_t
+    uint16_t expectedSumBE = 0x0406; // Adjust based on your endianness handling
+    uint16_t expectedSumLE = 0x0608; // Adjust based on your endianness handling
+
+    ASSERT_EQ(sumBE, expectedSumBE);
+    ASSERT_EQ(sumLE, expectedSumLE);
+}
+
+TEST(EndianLibTest, ImplicitCasting) {
+    be_uint16_t bigEndianValue = 0x0102;
+    le_uint16_t littleEndianValue = 0x0304;
+
+    // Implicit casting to native uint16_t
+    uint16_t nativeFromBE = bigEndianValue; // implicit cast
+    uint16_t nativeFromLE = littleEndianValue; // implicit cast
+
+    // Expected native values after casting
+    uint16_t expectedNativeFromBE = 0x0102;
+    uint16_t expectedNativeFromLE = 0x0304;
+
+    ASSERT_EQ(nativeFromBE, expectedNativeFromBE);
+    ASSERT_EQ(nativeFromLE, expectedNativeFromLE);
+}
+
+TEST(EndianLibTest, ExplicitCasting) {
+    be_uint16_t bigEndianValue = 0x0102;
+    le_uint16_t littleEndianValue = 0x0304;
+
+    // Explicit casting to native uint16_t
+    uint16_t nativeFromBE = static_cast<uint16_t>(bigEndianValue);
+    uint16_t nativeFromLE = static_cast<uint16_t>(littleEndianValue);
+
+    // Expected native values after casting
+    uint16_t expectedNativeFromBE = 0x0102;
+    uint16_t expectedNativeFromLE = 0x0304;
+
+    ASSERT_EQ(nativeFromBE, expectedNativeFromBE);
+    ASSERT_EQ(nativeFromLE, expectedNativeFromLE);
+}
+
+int main(int argc, char **argv) {
+    ::testing::InitGoogleTest(&argc, argv);
+    return RUN_ALL_TESTS();
+}

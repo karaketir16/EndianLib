@@ -1,28 +1,41 @@
 cmake_minimum_required(VERSION 3.14)
+project(EndianLib VERSION 1.0 DESCRIPTION "EndianLib: A C++ library for endian handling")
 
-project(MyEndianLib VERSION 1.0 DESCRIPTION "My Endian Library")
+# Specify the C++ standard
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-add_library(${PROJECT_NAME} INTERFACE)
-
-target_include_directories(${PROJECT_NAME} INTERFACE
+# Define the library target
+add_library(EndianLib INTERFACE)
+target_include_directories(EndianLib INTERFACE 
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:include>
 )
 
-# Uncomment the following line if your project requires a source file
-# target_sources(${PROJECT_NAME} INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/src/dummy.cpp)
-
-# Install and export steps
+# For installing (optional, but useful for library users)
 include(GNUInstallDirs)
-install(TARGETS ${PROJECT_NAME}
-    EXPORT MyEndianLibTargets
-    INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+install(TARGETS EndianLib
+    EXPORT endianlib-targets
+    PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/EndianLib
 )
-
-install(EXPORT MyEndianLibTargets
-    FILE MyEndianLibTargets.cmake
-    NAMESPACE MyEndianLib::
-    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/MyEndianLib
-)
-
 install(DIRECTORY include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+
+# Testing
+enable_testing()
+
+# FetchContent for GoogleTest
+include(FetchContent)
+FetchContent_Declare(
+  googletest
+  URL https://github.com/google/googletest/archive/refs/tags/release-1.11.0.zip
+)
+# For Windows: Prevent overriding the parent project's compiler/linker settings
+set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+FetchContent_MakeAvailable(googletest)
+
+# Create test executable
+add_executable(endian_test tests/endian_test.cpp)
+target_link_libraries(endian_test PRIVATE EndianLib GTest::gtest_main)
+
+include(GoogleTest)
+gtest_discover_tests(endian_test)

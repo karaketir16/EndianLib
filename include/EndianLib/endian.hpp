@@ -198,8 +198,6 @@ typedef _endian_::_E_Base<x, std::endian::big> be_##x;\
     typedef _endian_::_E_Base<x, std::endian::little> le_##x;
 
 
-}
-
 _CREATE_ENDIAN_TYPE(int8_t)
 _CREATE_ENDIAN_TYPE(int16_t)
 _CREATE_ENDIAN_TYPE(int32_t)
@@ -212,6 +210,11 @@ _CREATE_ENDIAN_TYPE(uint64_t)
 
 _CREATE_ENDIAN_TYPE(float)
 _CREATE_ENDIAN_TYPE(double)
+
+
+}
+
+
 
 
 #pragma pack(pop)
