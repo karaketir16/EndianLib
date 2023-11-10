@@ -1,11 +1,11 @@
 #pragma once
 
 #include <cstdint>
-#include <climits>
 #include <bit>
 
-
-
+#include <cstddef>
+#include <limits>
+#include <climits>
 
 #if defined(__linux__) || defined(__CYGWIN__)
 #include <endian.h>
