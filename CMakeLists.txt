@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.14)
-project(EndianLib VERSION 1.0 DESCRIPTION "EndianLib: A C++ library for endian handling")
+project(EndianLib VERSION 0.2.1 DESCRIPTION "EndianLib: A C++ library for endian handling")
 
 # Specify the C++ standard
 set(CMAKE_CXX_STANDARD 11)
