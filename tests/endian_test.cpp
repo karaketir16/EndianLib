@@ -6,13 +6,13 @@
 TEST(EndianLibTest, SwapEndian) {
     // Test endian swapping
     uint16_t original = 0x1234;
-    uint16_t swapped = _endian_::swap_endian(original);
+    uint16_t swapped = EndianLib::swap_endian(original);
     EXPECT_EQ(swapped, 0x3412);
 }
 
 
 TEST(EndianLibTest, LittleEndianConversion) {
-    _endian_::le_uint16_t leOriginal = 0x1234;
+    EndianLib::le_uint16_t leOriginal = 0x1234;
     const uint8_t expectedLittleEndian[2] = {0x34, 0x12}; // little-endian representation
 
     // Compare memory representation
@@ -20,7 +20,7 @@ TEST(EndianLibTest, LittleEndianConversion) {
 }
 
 TEST(EndianLibTest, BigEndianConversion) {
-    _endian_::be_uint16_t beOriginal = 0x1234;
+    EndianLib::be_uint16_t beOriginal = 0x1234;
     const uint8_t expectedBigEndian[2] = {0x12, 0x34}; // big-endian representation
 
     // Compare memory representation
@@ -29,37 +29,37 @@ TEST(EndianLibTest, BigEndianConversion) {
 
 TEST(EndianLibTest, SameEndianCheck) {
     // Test if the endian check is correct
-    EXPECT_TRUE(_endian_::IsSameEndian(std::endian::little) == _endian_::is_little_endian());
-    EXPECT_TRUE(_endian_::IsSameEndian(std::endian::big) != _endian_::is_little_endian());
+    EXPECT_TRUE(EndianLib::IsSameEndian(std::endian::little) == EndianLib::is_little_endian());
+    EXPECT_TRUE(EndianLib::IsSameEndian(std::endian::big) != EndianLib::is_little_endian());
 }
 
 
 
 TEST(EndianLibTest, LittleEndianArithmeticOperations) {
-    _endian_::le_uint16_t leValue1 = 0x0102;
-    _endian_::le_uint16_t leValue2 = 0x0304;
+    EndianLib::le_uint16_t leValue1 = 0x0102;
+    EndianLib::le_uint16_t leValue2 = 0x0304;
 
     // Assuming operator+ is overloaded
-    _endian_::le_uint16_t leSum = leValue1 + leValue2;
+    EndianLib::le_uint16_t leSum = leValue1 + leValue2;
     uint16_t expectedSum = 0x0406; // expected result in little endian
 
     ASSERT_EQ(static_cast<uint16_t>(leSum), expectedSum);
 }
 
 TEST(EndianLibTest, BigEndianArithmeticOperations) {
-    _endian_::be_uint16_t beValue1 = 0x0102;
-    _endian_::be_uint16_t beValue2 = 0x0304;
+    EndianLib::be_uint16_t beValue1 = 0x0102;
+    EndianLib::be_uint16_t beValue2 = 0x0304;
 
     // Assuming operator+ is overloaded
-    _endian_::be_uint16_t beSum = beValue1 + beValue2;
+    EndianLib::be_uint16_t beSum = beValue1 + beValue2;
     uint16_t expectedSum = 0x0406; // expected result in big endian
 
     ASSERT_EQ(static_cast<uint16_t>(beSum), expectedSum);
 }
 
 TEST(EndianLibTest, TypeCastingOperations) {
-    _endian_::le_uint16_t leValue = 0x1234;
-    _endian_::be_uint16_t beValue = 0x1234;
+    EndianLib::le_uint16_t leValue = 0x1234;
+    EndianLib::be_uint16_t beValue = 0x1234;
 
     // Check type casting to native types
     uint16_t nativeFromLe = static_cast<uint16_t>(leValue);
@@ -74,7 +74,7 @@ TEST(EndianLibTest, TypeCastingOperations) {
 
 
 
-using namespace _endian_; // Replace with your actual namespace
+using namespace EndianLib; // Replace with your actual namespace
 
 
 TEST(EndianLibTest, Addition) {

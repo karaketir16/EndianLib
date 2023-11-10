@@ -93,35 +93,35 @@ By following these steps, you can integrate `EndianLib` as a subdirectory in you
 ### Big Endian Types
 
 ```cpp
-be_int8_t
-be_int16_t
-be_int32_t
-be_int64_t
+EndianLib::be_int8_t
+EndianLib::be_int16_t
+EndianLib::be_int32_t
+EndianLib::be_int64_t
 
-be_uint8_t
-be_uint16_t
-be_uint32_t
-be_uint64_t
+EndianLib::be_uint8_t
+EndianLib::be_uint16_t
+EndianLib::be_uint32_t
+EndianLib::be_uint64_t
 
-be_float
-be_double
+EndianLib::be_float
+EndianLib::be_double
 ```
 
 ### Little Endian Types
 
 ```cpp
-le_int8_t
-le_int16_t
-le_int32_t
-le_int64_t
+EndianLib::le_int8_t
+EndianLib::le_int16_t
+EndianLib::le_int32_t
+EndianLib::le_int64_t
 
-le_uint8_t
-le_uint16_t
-le_uint32_t
-le_uint64_t
+EndianLib::le_uint8_t
+EndianLib::le_uint16_t
+EndianLib::le_uint32_t
+EndianLib::le_uint64_t
 
-le_float
-le_double
+EndianLib::le_float
+EndianLib::le_double
 ```
 
 ### Example
@@ -129,7 +129,7 @@ le_double
 ```cpp
 #include <EndianLib/endian.hpp>
 
-using namespace _endian_;
+using namespace EndianLib;
 
 int main() {
     be_int32_t      k;

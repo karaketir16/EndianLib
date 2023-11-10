@@ -34,7 +34,7 @@ static_assert(
 
 #pragma pack(push, 1)
 
-namespace _endian_ {
+namespace EndianLib {
 
 
 template <typename T>
@@ -194,8 +194,8 @@ protected:
 
 
 #define _CREATE_ENDIAN_TYPE(x) \
-typedef _endian_::_E_Base<x, std::endian::big> be_##x;\
-    typedef _endian_::_E_Base<x, std::endian::little> le_##x;
+typedef EndianLib::_E_Base<x, std::endian::big> be_##x;\
+    typedef EndianLib::_E_Base<x, std::endian::little> le_##x;
 
 
 _CREATE_ENDIAN_TYPE(int8_t)
