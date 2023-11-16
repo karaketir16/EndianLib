@@ -21,7 +21,6 @@ install(TARGETS EndianLib
 install(DIRECTORY include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 
 # Testing
-enable_testing()
 
 # FetchContent for GoogleTest
 include(FetchContent)
@@ -33,9 +32,16 @@ FetchContent_Declare(
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
-# Create test executable
-add_executable(endian_test tests/endian_test.cpp)
-target_link_libraries(endian_test PRIVATE EndianLib GTest::gtest_main)
 
-include(GoogleTest)
-gtest_discover_tests(endian_test)
+find_package(GTest QUIET)
+
+if(GTest_FOUND)
+  enable_testing()
+
+  # Create test executable
+  add_executable(endian_test tests/endian_test.cpp)
+  target_link_libraries(endian_test PRIVATE EndianLib GTest::gtest_main)
+
+  include(GoogleTest)
+  gtest_discover_tests(endian_test)
+endif()
