@@ -24,7 +24,7 @@ install(DIRECTORY include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 
 find_package(GTest QUIET)
 
-if((NOT GTest_FOUND) or (NOT TARGET gtest AND NOT TARGET gtest_main))
+if((NOT GTest_FOUND) OR (NOT TARGET gtest AND NOT TARGET gtest_main))
   # FetchContent for GoogleTest
   include(FetchContent)
   FetchContent_Declare(
