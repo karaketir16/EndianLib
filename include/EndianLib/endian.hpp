@@ -1,8 +1,6 @@
 #pragma once
 
 #include <cstdint>
-#include <bit>
-
 #include <cstddef>
 #include <limits>
 #include <climits>
