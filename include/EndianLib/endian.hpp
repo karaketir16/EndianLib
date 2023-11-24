@@ -190,7 +190,7 @@ struct _E_Base{
 
 protected:
     T val;
-} __attribute__((packed));
+};
 
 
 #define _CREATE_ENDIAN_TYPE(x) \
