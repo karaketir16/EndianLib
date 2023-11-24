@@ -33,15 +33,15 @@ set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
 
-find_package(GTest QUIET)
-
-if(GTest_FOUND)
+if(TARGET gtest AND TARGET gtest_main)
   enable_testing()
 
   # Create test executable
   add_executable(endian_test tests/endian_test.cpp)
-  target_link_libraries(endian_test PRIVATE EndianLib GTest::gtest_main)
+  target_link_libraries(endian_test PRIVATE EndianLib gtest_main)
 
   include(GoogleTest)
   gtest_discover_tests(endian_test)
+else()
+  message(WARNING "Google Test not found. Tests will not be built.")
 endif()
