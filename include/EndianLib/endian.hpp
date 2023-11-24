@@ -1,8 +1,6 @@
 #pragma once
 
 #include <cstdint>
-#include <bit>
-
 #include <cstddef>
 #include <limits>
 #include <climits>
@@ -190,7 +188,7 @@ struct _E_Base{
 
 protected:
     T val;
-} __attribute__((packed));
+};
 
 
 #define _CREATE_ENDIAN_TYPE(x) \
